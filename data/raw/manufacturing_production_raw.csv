@@ -1,0 +1,2 @@
+record_id,date,shift,production_line,product,production_quantity,defective_units,scrap_units,downtime_minutes,defect_category,downtime_reason
+1,2025-01-01,Morning,Line A,Product Alpha,1490,42,8,31.5,Surface Defect,Material Shortage
