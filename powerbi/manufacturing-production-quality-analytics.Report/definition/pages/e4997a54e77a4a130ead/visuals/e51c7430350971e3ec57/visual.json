@@ -1,0 +1,109 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "e51c7430350971e3ec57",
+  "position": {
+    "x": 565,
+    "y": 768.33333333333337,
+    "z": 5,
+    "height": 286.66666666666669,
+    "width": 946.66666666666674,
+    "tabOrder": 5
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "HierarchyLevel": {
+                  "Expression": {
+                    "Hierarchy": {
+                      "Expression": {
+                        "PropertyVariationSource": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "manufacturing_production_cleaned"
+                            }
+                          },
+                          "Name": "Változat",
+                          "Property": "date"
+                        }
+                      },
+                      "Hierarchy": "Dátumhierarchia"
+                    }
+                  },
+                  "Level": "Hónap"
+                }
+              },
+              "queryRef": "manufacturing_production_cleaned.date.Változat.Dátumhierarchia.Hónap",
+              "nativeQueryRef": "date Hónap",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "manufacturing_production_cleaned"
+                    }
+                  },
+                  "Property": "Total Downtime Minutes"
+                }
+              },
+              "queryRef": "manufacturing_production_cleaned.Total Downtime Minutes",
+              "nativeQueryRef": "Total Downtime Minutes"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Total Downtime Trend over Time'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Data labels - straight line'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

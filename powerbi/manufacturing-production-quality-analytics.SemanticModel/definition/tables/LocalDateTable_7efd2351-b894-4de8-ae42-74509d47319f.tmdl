@@ -1,0 +1,116 @@
+table LocalDateTable_7efd2351-b894-4de8-ae42-74509d47319f
+	isHidden
+	showAsVariationsOnly
+	lineageTag: 69d2421d-c91b-4d2b-af0a-13560e3f50d1
+
+	column Date
+		dataType: dateTime
+		isHidden
+		formatString: General Date
+		lineageTag: c186b6e4-6864-427e-8018-0ec112631826
+		dataCategory: PaddedDateTableDates
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		annotation SummarizationSetBy = User
+
+	column Év = YEAR([Date])
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 4eaadd12-1862-48d4-832b-aad143894eac
+		dataCategory: Years
+		summarizeBy: none
+
+		annotation SummarizationSetBy = User
+
+		annotation TemplateId = Year
+
+	column MonthNo = MONTH([Date])
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 57720877-d9da-47b7-8ea0-d500a1ae3df0
+		dataCategory: MonthOfYear
+		summarizeBy: none
+
+		annotation SummarizationSetBy = User
+
+		annotation TemplateId = MonthNumber
+
+	column Hónap = FORMAT([Date], "MMMM")
+		dataType: string
+		isHidden
+		lineageTag: 2a9037e7-c3b9-483f-be6b-15cbb56affcb
+		dataCategory: Months
+		summarizeBy: none
+		sortByColumn: MonthNo
+
+		annotation SummarizationSetBy = User
+
+		annotation TemplateId = Month
+
+	column QuarterNo = INT(([MonthNo] + 2) / 3)
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: eddcb587-801d-4a79-bb39-7973aabbb385
+		dataCategory: QuarterOfYear
+		summarizeBy: none
+
+		annotation SummarizationSetBy = User
+
+		annotation TemplateId = QuarterNumber
+
+	column Negyedév = [QuarterNo] & ". negyedév"
+		dataType: string
+		isHidden
+		lineageTag: 08545807-67da-48b1-905d-b276cabdb443
+		dataCategory: Quarters
+		summarizeBy: none
+		sortByColumn: QuarterNo
+
+		annotation SummarizationSetBy = User
+
+		annotation TemplateId = Quarter
+
+	column Nap = DAY([Date])
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 943791af-2ce7-48f6-ac04-dbb9e7a8723e
+		dataCategory: DayOfMonth
+		summarizeBy: none
+
+		annotation SummarizationSetBy = User
+
+		annotation TemplateId = Day
+
+	hierarchy Dátumhierarchia
+		lineageTag: 33906036-c0f9-4945-95d3-3f2fb82beae7
+
+		level Év
+			lineageTag: 58ded407-4952-4114-a506-5c39ced5c652
+			column: Év
+
+		level Negyedév
+			lineageTag: e6bbf1c8-2d29-46fd-8414-775b7666005e
+			column: Negyedév
+
+		level Hónap
+			lineageTag: 78d04ee5-fbef-4d55-abd7-9ecae45298b3
+			column: Hónap
+
+		level Nap
+			lineageTag: 82d59c93-bb60-49fa-a401-ca8c5d90a883
+			column: Nap
+
+		annotation TemplateId = DateHierarchy
+
+	partition LocalDateTable_7efd2351-b894-4de8-ae42-74509d47319f = calculated
+		mode: import
+		source = Calendar(Date(Year(MIN('manufacturing_production_cleaned'[date])), 1, 1), Date(Year(MAX('manufacturing_production_cleaned'[date])), 12, 31))
+
+	annotation __PBI_LocalDateTable = true
+

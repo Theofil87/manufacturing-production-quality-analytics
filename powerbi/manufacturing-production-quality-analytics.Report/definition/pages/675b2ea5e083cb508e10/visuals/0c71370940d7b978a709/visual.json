@@ -1,0 +1,141 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "0c71370940d7b978a709",
+  "position": {
+    "x": 473.33333333333337,
+    "y": 0,
+    "z": 1,
+    "height": 463.33333333333337,
+    "width": 463.33333333333337,
+    "tabOrder": 1
+  },
+  "visual": {
+    "visualType": "columnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "manufacturing_production_cleaned"
+                    }
+                  },
+                  "Property": "shift"
+                }
+              },
+              "queryRef": "manufacturing_production_cleaned.shift",
+              "nativeQueryRef": "shift",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "manufacturing_production_cleaned"
+                    }
+                  },
+                  "Property": "Defect Rate"
+                }
+              },
+              "queryRef": "manufacturing_production_cleaned.Defect Rate",
+              "nativeQueryRef": "Defect Rate"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "manufacturing_production_cleaned"
+                  }
+                },
+                "Property": "shift"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Defect Rate by Shift'"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'center'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "0b11c28370a306c40a4d",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "manufacturing_production_cleaned"
+              }
+            },
+            "Property": "shift"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "9983dbd1087e216d5907",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "manufacturing_production_cleaned"
+              }
+            },
+            "Property": "Defect Rate"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

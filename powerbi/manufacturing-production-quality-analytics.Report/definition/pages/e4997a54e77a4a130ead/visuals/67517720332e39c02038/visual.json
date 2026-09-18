@@ -1,0 +1,109 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "67517720332e39c02038",
+  "position": {
+    "x": 973.33333333333337,
+    "y": 461.66666666666669,
+    "z": 4,
+    "height": 286.66666666666669,
+    "width": 946.66666666666674,
+    "tabOrder": 4
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "HierarchyLevel": {
+                  "Expression": {
+                    "Hierarchy": {
+                      "Expression": {
+                        "PropertyVariationSource": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "manufacturing_production_cleaned"
+                            }
+                          },
+                          "Name": "Változat",
+                          "Property": "date"
+                        }
+                      },
+                      "Hierarchy": "Dátumhierarchia"
+                    }
+                  },
+                  "Level": "Hónap"
+                }
+              },
+              "queryRef": "manufacturing_production_cleaned.date.Változat.Dátumhierarchia.Hónap",
+              "nativeQueryRef": "date Hónap",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "manufacturing_production_cleaned"
+                    }
+                  },
+                  "Property": "Scrap Rate"
+                }
+              },
+              "queryRef": "manufacturing_production_cleaned.Scrap Rate",
+              "nativeQueryRef": "Scrap Rate"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Scrap Rate Trend over Time'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Data labels - straight line'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "manufacturing-production-quality-analytics"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "dea38488-b887-400f-9b5e-813b3bd3d2c8"
+  }
+}

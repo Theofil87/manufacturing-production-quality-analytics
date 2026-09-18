@@ -1,0 +1,21 @@
+model Model
+	culture: hu-HU
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: hu-HU
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["manufacturing_production_cleaned"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table manufacturing_production_cleaned
+ref table DateTableTemplate_9d246781-f3f5-44d7-9254-b5b88d8d913b
+ref table LocalDateTable_7efd2351-b894-4de8-ae42-74509d47319f
+
+ref cultureInfo hu-HU
+

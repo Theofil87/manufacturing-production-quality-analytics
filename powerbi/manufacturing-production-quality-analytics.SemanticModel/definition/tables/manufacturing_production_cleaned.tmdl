@@ -1,0 +1,262 @@
+table manufacturing_production_cleaned
+	lineageTag: b24a66b7-487f-423e-8fc3-078663e73252
+
+	measure 'Total Production' =
+			
+			SUM(manufacturing_production_cleaned[production_quantity])
+		formatString: 0
+		lineageTag: 56b3599d-f88f-41c4-bddd-f0a23c7e0aad
+
+	measure 'Total Defective Units' =
+			
+			SUM(manufacturing_production_cleaned[defective_units])
+		formatString: 0
+		lineageTag: fc36fd85-a05a-4523-b252-63bb711832e0
+
+	measure 'Total Scrap Units' =
+			
+			SUM(manufacturing_production_cleaned[scrap_units])
+		formatString: 0
+		lineageTag: 4d5a6376-b5fe-4c13-87e3-2b5daaf438e5
+
+	measure 'Total Downtime Minutes' =
+			
+			SUM(manufacturing_production_cleaned[downtime_minutes])
+		formatString: 0
+		lineageTag: 71d1ca9f-57e5-480c-89f0-489832f0db8d
+
+	measure 'Defect Rate' =
+			
+			DIVIDE(
+			    [Total Defective Units],
+			    [Total Production]
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 4f2b5385-0b6d-43a5-805e-0b7a939fb0da
+
+	measure 'Scrap Rate' =
+			
+			DIVIDE(
+			    [Total Scrap Units],
+			    [Total Production]
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 0aa0fb85-431c-4d25-9e7b-28d97c2216a2
+
+	measure 'Yield Rate' =
+			
+			DIVIDE(
+			    SUM(manufacturing_production_cleaned[good_units]),
+			    [Total Production]
+			)
+		lineageTag: bcf7a894-a3f2-47cd-acbf-0f2132a88a64
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Reconciliation Gap' =
+			
+			[Total Production]
+			    - SUM(manufacturing_production_cleaned[good_units])
+			    - [Total Defective Units]
+			    - [Total Scrap Units]
+		formatString: 0
+		lineageTag: ea0cec2b-0eac-4c97-8209-bbf02a274fc2
+
+	measure 'Reconciliation Status' =
+			
+			IF(
+			    [Reconciliation Gap] = 0,
+			    "OK",
+			    "Check Data"
+			)
+		lineageTag: 781c6075-340e-49c5-be4c-a04d3bf11fd8
+
+	column record_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 9e5aa06a-823a-4081-bf66-f83bdb165bd5
+		summarizeBy: none
+		sourceColumn: record_id
+
+		annotation SummarizationSetBy = User
+
+	column date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 75827fbd-cca6-43e8-829e-09399e1f4728
+		summarizeBy: none
+		sourceColumn: date
+
+		variation Változat
+			isDefault
+			relationship: 59098a42-cb1b-4307-9d35-5093bd5d7c27
+			defaultHierarchy: LocalDateTable_7efd2351-b894-4de8-ae42-74509d47319f.Dátumhierarchia
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column shift
+		dataType: string
+		lineageTag: 2c8b4699-89fd-4bc6-89b5-99069753f0b8
+		summarizeBy: none
+		sourceColumn: shift
+		sortByColumn: 'Shift Sort Order'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column production_line
+		dataType: string
+		lineageTag: 0dac5a8b-2821-4dad-9ec4-afd9f885c03e
+		summarizeBy: none
+		sourceColumn: production_line
+
+		annotation SummarizationSetBy = Automatic
+
+	column product
+		dataType: string
+		lineageTag: 0241ea04-516c-4250-8525-73e68c5d926c
+		summarizeBy: none
+		sourceColumn: product
+
+		annotation SummarizationSetBy = Automatic
+
+	column production_quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: 98071821-c09f-4392-98af-4d4d2839f32a
+		summarizeBy: sum
+		sourceColumn: production_quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column defective_units
+		dataType: int64
+		formatString: 0
+		lineageTag: d4592c94-4f8c-4203-9acd-50a2930807ef
+		summarizeBy: sum
+		sourceColumn: defective_units
+
+		annotation SummarizationSetBy = Automatic
+
+	column scrap_units
+		dataType: int64
+		formatString: 0
+		lineageTag: f4fccd08-062e-40e1-8646-c5fe54d6f32a
+		summarizeBy: sum
+		sourceColumn: scrap_units
+
+		annotation SummarizationSetBy = Automatic
+
+	column downtime_minutes
+		dataType: double
+		lineageTag: f713e77d-3248-4694-9c8b-7deaf6abcf3a
+		summarizeBy: sum
+		sourceColumn: downtime_minutes
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column defect_category
+		dataType: string
+		lineageTag: 5ce4d371-a086-4271-ad39-a98e2c35be64
+		summarizeBy: none
+		sourceColumn: defect_category
+
+		annotation SummarizationSetBy = Automatic
+
+	column downtime_reason
+		dataType: string
+		lineageTag: 62df7055-02da-4bf4-8808-220806fec970
+		summarizeBy: none
+		sourceColumn: downtime_reason
+
+		annotation SummarizationSetBy = Automatic
+
+	column good_units
+		dataType: int64
+		formatString: 0
+		lineageTag: b926c682-3a0a-41fc-bb06-f9fced5f7b1d
+		summarizeBy: sum
+		sourceColumn: good_units
+
+		annotation SummarizationSetBy = Automatic
+
+	column defect_rate
+		dataType: string
+		isHidden
+		formatString: Százalék
+		lineageTag: 89ee7753-65c5-4fe4-b5c5-49c653789362
+		summarizeBy: none
+		sourceColumn: defect_rate
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+	column scrap_rate
+		dataType: string
+		isHidden
+		lineageTag: 9080f211-5cf0-4a55-a73d-ecdfe45d0f3d
+		summarizeBy: none
+		sourceColumn: scrap_rate
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Shift Sort Order'
+		dataType: int64
+		formatString: 0
+		lineageTag: db20b4a9-e205-4f82-89b5-4969d1783e4a
+		summarizeBy: none
+		sourceColumn: Shift Sort Order
+
+		annotation SummarizationSetBy = User
+
+	column downtime_reason_clean
+		dataType: string
+		lineageTag: aab82044-2c28-4c3c-8f90-5685685d4f32
+		summarizeBy: none
+		sourceColumn: downtime_reason_clean
+
+		annotation SummarizationSetBy = Automatic
+
+	partition manufacturing_production_cleaned = m
+		mode: import
+		source =
+				let
+				    Forrás = Csv.Document(File.Contents("C:\Users\Note\Documents\manufacturing-production-quality-analytics\data\processed\manufacturing_production_cleaned.csv"),[Delimiter=",", Columns=14, Encoding=1250, QuoteStyle=QuoteStyle.None]),
+				    #"Előléptetett fejlécek" = Table.PromoteHeaders(Forrás, [PromoteAllScalars=true]),
+				    #"Típus módosítva" = Table.TransformColumnTypes(#"Előléptetett fejlécek",{{"record_id", Int64.Type}, {"date", type date}, {"shift", type text}, {"production_line", type text}, {"product", type text}, {"production_quantity", Int64.Type}, {"defective_units", Int64.Type}, {"scrap_units", Int64.Type}, {"downtime_minutes", type text}, {"defect_category", type text}, {"downtime_reason", type text}, {"good_units", Int64.Type}, {"defect_rate", type text}, {"scrap_rate", type text}}),
+				    #"Egyéni oszlop hozzáadva" = Table.AddColumn(#"Típus módosítva", "Shift Sort Order", each if [shift] = "Morning" then 1
+				else if [shift] = "Afternoon" then 2
+				else if [shift] = "Night" then 3
+				else 99),
+				    Egyéni1 = Table.TransformColumnTypes(
+				    #"Egyéni oszlop hozzáadva",
+				    {{"downtime_minutes", type number}},
+				    "en-US"
+				),
+				    #"Egyéni oszlop hozzáadva1" = Table.AddColumn(Egyéni1, "downtime_reason_clean", each if [downtime_reason] = null then "No Reason Recorded"
+				else if Text.Trim([downtime_reason]) = "" then "No Reason Recorded"
+				else [downtime_reason]),
+				    Egyéni2 = Table.TransformColumnTypes(
+				    #"Egyéni oszlop hozzáadva1",
+				    {
+				        {"Shift Sort Order", Int64.Type},
+				        {"downtime_reason_clean", type text}
+				    }
+				)
+				in
+				    Egyéni2
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigálás
+

@@ -1,0 +1,152 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "8117450db980a14da47a",
+  "position": {
+    "x": 50,
+    "y": 461.66666666666669,
+    "z": 3,
+    "height": 286.66666666666669,
+    "width": 910,
+    "tabOrder": 3
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "HierarchyLevel": {
+                  "Expression": {
+                    "Hierarchy": {
+                      "Expression": {
+                        "PropertyVariationSource": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "manufacturing_production_cleaned"
+                            }
+                          },
+                          "Name": "Változat",
+                          "Property": "date"
+                        }
+                      },
+                      "Hierarchy": "Dátumhierarchia"
+                    }
+                  },
+                  "Level": "Hónap"
+                }
+              },
+              "queryRef": "manufacturing_production_cleaned.date.Változat.Dátumhierarchia.Hónap",
+              "nativeQueryRef": "date Hónap",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "manufacturing_production_cleaned"
+                    }
+                  },
+                  "Property": "Defect Rate"
+                }
+              },
+              "queryRef": "manufacturing_production_cleaned.Defect Rate",
+              "nativeQueryRef": "Defect Rate"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Defect Rate Trend over Time'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Data labels - straight line'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "d0afaea2d6244d5a647c",
+        "field": {
+          "HierarchyLevel": {
+            "Expression": {
+              "Hierarchy": {
+                "Expression": {
+                  "PropertyVariationSource": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "manufacturing_production_cleaned"
+                      }
+                    },
+                    "Name": "Változat",
+                    "Property": "date"
+                  }
+                },
+                "Hierarchy": "Dátumhierarchia"
+              }
+            },
+            "Level": "Hónap"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "9ff4b4c632b3e9e34bea",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "manufacturing_production_cleaned"
+              }
+            },
+            "Property": "Defect Rate"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

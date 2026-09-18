@@ -1,0 +1,165 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "bc82b8a2ab0a300e22ba",
+  "position": {
+    "x": 0,
+    "y": 445,
+    "z": 10,
+    "height": 635,
+    "width": 1825,
+    "tabOrder": 10
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "HierarchyLevel": {
+                  "Expression": {
+                    "Hierarchy": {
+                      "Expression": {
+                        "PropertyVariationSource": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "manufacturing_production_cleaned"
+                            }
+                          },
+                          "Name": "Változat",
+                          "Property": "date"
+                        }
+                      },
+                      "Hierarchy": "Dátumhierarchia"
+                    }
+                  },
+                  "Level": "Hónap"
+                }
+              },
+              "queryRef": "manufacturing_production_cleaned.date.Változat.Dátumhierarchia.Hónap",
+              "nativeQueryRef": "date Hónap",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "manufacturing_production_cleaned"
+                    }
+                  },
+                  "Property": "Total Production"
+                }
+              },
+              "queryRef": "manufacturing_production_cleaned.Total Production",
+              "nativeQueryRef": "Total Production"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Production Trend over Time'"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'center'"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {}
+        }
+      ],
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Data labels - straight line'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "d823bd2c2a9dbd35703a",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "manufacturing_production_cleaned"
+              }
+            },
+            "Property": "Total Production"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "3183fc97a5a0a1d6ed15",
+        "field": {
+          "HierarchyLevel": {
+            "Expression": {
+              "Hierarchy": {
+                "Expression": {
+                  "PropertyVariationSource": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "manufacturing_production_cleaned"
+                      }
+                    },
+                    "Name": "Változat",
+                    "Property": "date"
+                  }
+                },
+                "Hierarchy": "Dátumhierarchia"
+              }
+            },
+            "Level": "Hónap"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
+  }
+}

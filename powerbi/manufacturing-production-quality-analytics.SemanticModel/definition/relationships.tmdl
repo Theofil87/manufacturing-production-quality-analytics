@@ -1,0 +1,5 @@
+relationship 59098a42-cb1b-4307-9d35-5093bd5d7c27
+	joinOnDateBehavior: datePartOnly
+	fromColumn: manufacturing_production_cleaned.date
+	toColumn: LocalDateTable_7efd2351-b894-4de8-ae42-74509d47319f.Date
+
