@@ -267,17 +267,17 @@ Provides a high-level view of manufacturing performance.
 
 Includes:
 
-Total Production
-Total Defective Units
-Total Scrap Units
-Defect Rate
-Scrap Rate
-Yield Rate
-Production Trend over Time
-Product slicer
-Production Line slicer
-Shift slicer
-Date range slicer
+- Total Production
+- Total Defective Units
+- Total Scrap Units
+- Defect Rate
+- Scrap Rate
+- Yield Rate
+- Production Trend over Time
+- Product slicer
+- Production Line slicer
+- Shift slicer
+- Date range slicer
 
 2. Production & Quality
 
@@ -285,11 +285,11 @@ Focuses on production, quality, product performance, and downtime.
 
 Includes:
 
-Production by Production Line
-Defect Rate by Production Line
-Total Downtime Minutes by Reason
-Defect Rate by Product
-Scrap Rate by Product
+- Production by Production Line
+- Defect Rate by Production Line
+- Total Downtime Minutes by Reason
+- Defect Rate by Product
+- Scrap Rate by Product
 
 3. Line × Shift Performance
 
@@ -297,12 +297,12 @@ Analyzes the interaction between production lines and shifts.
 
 Includes:
 
-Production by Line and Shift
-Defect Rate by Line and Shift
-Scrap Rate by Line and Shift
-Defect Rate Trend over Time
-Scrap Rate Trend over Time
-Total Downtime Trend over Time
+- Production by Line and Shift
+- Defect Rate by Line and Shift
+- Scrap Rate by Line and Shift
+- Defect Rate Trend over Time
+- Scrap Rate Trend over Time
+- Total Downtime Trend over Time
 
 4. Shift Performance
 
@@ -310,9 +310,9 @@ Provides a focused comparison of manufacturing shifts.
 
 Includes:
 
-Production by Shift
-Defect Rate by Shift
-Scrap Rate by Shift
+- Production by Shift
+- Defect Rate by Shift
+- Scrap Rate by Shift
 
 Shift order is explicitly controlled using:
 
@@ -336,4 +336,236 @@ Key characteristics:
 
 The model intentionally remains relatively simple because the current dataset does not require a complex dimensional model.
 
+Power Query Transformations
+
+Power Query performs final semantic-layer transformations including:
+
+- Data type corrections
+- Shift sort-order creation
+- Downtime numeric conversion
+- Locale-aware numeric conversion
+- Missing downtime reason handling
+- Final column type cleanup
+
+downtime_minutes is converted using the appropriate locale because the source CSV uses a period as the decimal separator.
+
+Data Quality Controls
+
+The project includes several data-quality controls:
+
+- Required column validation
+- Numeric type validation
+- Production quantity validation
+- Defective and scrap quantity validation
+- Downtime validation
+- Production reconciliation
+- Reconciliation status
+- Missing downtime reason handling
+- Explicit shift sorting
+
+The purpose of these controls is to ensure that analytical results are based on internally consistent data.
+
+Key Analytical Observations
+
+The current dataset produces several useful descriptive observations.
+
+Production Lines
+
+Production volume differs substantially between the three production lines.
+
+However, raw defect counts should not be used alone to compare quality because production volumes differ.
+
+Defect rate is therefore used as the primary normalized quality metric.
+
+Quality
+
+The production-line defect rates are relatively close to one another.
+
+This means that raw defect volume and normalized defect rate provide different perspectives and should not be treated as interchangeable metrics.
+
+Defect Categories
+
+The defect categories are relatively balanced in the current dataset.
+
+The four main categories are:
+
+- Surface Defect
+- Dimensional Error
+- Coating Defect
+- Assembly Error
+
+No single category overwhelmingly dominates the distribution.
+
+Downtime
+
+Downtime is distributed across several categories, including:
+
+- Maintenance
+- Changeover
+- Mechanical Failure
+- Quality Issue
+- Material Shortage
+
+The distribution is relatively balanced, so the analysis does not assume that one downtime category is solely responsible for production losses.
+
+Products
+
+Product-level performance differs across defect rate, scrap rate, and downtime.
+
+These differences are presented descriptively and are not interpreted as causal relationships.
+
+Important Analytical Principles
+
+The project follows several analytical principles:
+
+Aggregated Rate Calculation
+
+Defect and scrap rates are calculated using aggregated quantities:
+
+SUM(Defective Units) / SUM(Production Quantity)
+
+rather than averaging individual row-level percentages.
+
+Volume-Aware Comparisons
+
+Production lines and products are compared using normalized metrics where appropriate.
+
+Raw defect counts alone can be misleading when production volumes differ.
+
+Correlation vs. Causation
+
+Observed relationships in the dataset are treated as descriptive patterns.
+
+The analysis does not claim that a correlation automatically represents a causal relationship.
+
+Repository Structure
+
+manufacturing-production-quality-analytics/
+
+├── app/
+│   └── Streamlit application
+│
+├── data/
+│   ├── raw/
+│   └── processed/
+│
+├── notebooks/
+│   └── manufacturing_production_eda.ipynb
+│
+├── powerbi/
+│   ├── manufacturing-production-quality-analytics.Report/
+│   └── manufacturing-production-quality-analytics.SemanticModel/
+│
+├── sql/
+│   └── SQL analytics scripts
+│
+├── src/
+│   └── data_processing.py
+│
+├── tests/
+│   └── Data processing tests
+│
+├── requirements.txt
+├── manufacturing_quality_analyst.agent.md
+└── README.md
+
+
+
+Project Status
+
+🟢 Power BI dashboard completed and validated.
+
+Completed
+Python data cleaning
+Data validation
+Processed dataset creation
+Exploratory Data Analysis
+Manufacturing KPI definitions
+Power Query transformations
+Power BI semantic model
+DAX measures
+Production analysis
+Quality analysis
+Scrap analysis
+Downtime analysis
+Line × Shift analysis
+Shift analysis
+Time-series analysis
+Interactive Power BI slicers
+Data reconciliation controls
+Power BI report review and validation
+
+In Progress / Next Steps
+SQL / PostgreSQL analytics layer
+Streamlit dashboard
+Final portfolio documentation
+GitHub repository polish
+End-to-end project integration
+
+Limitations
+
+The current dataset is designed for portfolio and analytical demonstration purposes.
+
+Important limitations include:
+
+The dataset is synthetic.
+The analysis is primarily descriptive.
+Event-level process information is not available.
+Machine-level data is not available.
+Operator-level information is not available.
+Material batch information is not available.
+Root-cause relationships cannot be established from the current dataset alone.
+OEE is not currently implemented because the required Availability, Performance, and Quality components are not fully defined in the dataset.
+
+Additional operational data would be required for deeper root-cause and predictive analysis.
+
+Future Improvements
+
+Potential future extensions include:
+
+PostgreSQL data warehouse layer
+SQL analytical views
+Advanced manufacturing KPI calculations
+OEE calculation when the required inputs are available
+Machine-level analysis
+Root-cause analysis
+Statistical process control
+Control charts
+Predictive quality analytics
+Anomaly detection
+Automated data pipelines
+Streamlit interactive application
+Automated testing and CI/CD
+Advanced Power BI time intelligence
+Dedicated Date Dimension for more advanced reporting scenarios
+
+Portfolio Objective
+
+This project demonstrates practical skills relevant to Manufacturing Data Analyst, Operations Data Analyst, Production Analyst, and Data Analyst roles.
+
+The focus is not only on creating visualizations, but on building a complete analytical workflow:
+
+Data
+  ↓
+Cleaning
+  ↓
+Validation
+  ↓
+Exploration
+  ↓
+SQL Analytics
+  ↓
+Semantic Modeling
+  ↓
+DAX
+  ↓
+Visualization
+  ↓
+Business Insights
+
+Author
+
+Béla Páger
+
+Manufacturing / Materials Engineering background with experience in production, quality, process optimization, and manufacturing analytics.
 

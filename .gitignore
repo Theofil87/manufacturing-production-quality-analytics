@@ -6,3 +6,7 @@ venv/
 .DS_Store
 .ipynb_checkpoints/
 *.pbix
+
+# Power BI local/machine-specific artifacts (PBIP)
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
