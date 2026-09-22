@@ -66,22 +66,23 @@ The same KPI definitions and business rules are used across the SQL, Power BI, a
 
 ## 📊 Dashboard Preview
 
-### Streamlit
+### Streamlit Dashboard
 
-The live Streamlit application provides:
+The live Streamlit dashboard provides:
 
-- Executive KPI overview
-- Monthly production and quality trends
+- KPI overview
+- Production and quality trends
 - Production by line and shift
-- Defect rate by line and product
-- Scrap rate by product
-- Downtime by reason
+- Defect and scrap analysis
+- Downtime analysis
 - Line × Shift performance
 - Interactive filters
 
-👉 **[Open the live Streamlit dashboard](https://manufacturing-quality-analytics.streamlit.app)**
+![Streamlit dashboard preview](docs/images/streamlit-dashboard.png)
 
-### Power BI
+**Live Demo:** https://manufacturing-quality-analytics.streamlit.app
+
+### Power BI Dashboard
 
 The Power BI report contains four analytical pages:
 
@@ -91,8 +92,6 @@ The Power BI report contains four analytical pages:
 - Shift Performance
 
 The Power BI project files are available in the `powerbi/` directory.
-
-> **Dashboard screenshots:** visual screenshots can be added here to provide a quick portfolio preview alongside the live Streamlit demo.
 
 ---
 
