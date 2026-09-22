@@ -6,6 +6,98 @@ The project demonstrates a complete analytics workflow from raw manufacturing da
 
 ---
 
+## 🚀 Live Demo
+
+**Interactive Streamlit dashboard:**  
+https://manufacturing-quality-analytics.streamlit.app
+
+The live dashboard is connected to a cloud PostgreSQL database hosted on Supabase and provides interactive production, quality, scrap, downtime, product, line, and shift analysis.
+
+**Source code:**  
+https://github.com/Theofil87/manufacturing-production-quality-analytics
+
+---
+
+## Architecture
+
+The project implements an end-to-end manufacturing analytics pipeline:
+
+```text
+Raw Manufacturing CSV
+        │
+        ▼
+Python / Pandas
+Cleaning & Validation
+        │
+        ▼
+Processed Manufacturing Data
+        │
+        ▼
+PostgreSQL / Supabase
+        │
+        ▼
+SQL Analytical Views
+        │
+        ├──────────────────────┐
+        ▼                      ▼
+    Power BI              Streamlit
+    Dashboard             Dashboard
+        │                      │
+        └──────────┬───────────┘
+                   ▼
+          Manufacturing KPIs
+          & Operational Insights
+```
+
+### Analytics layers
+
+| Layer | Purpose |
+|---|---|
+| **Python / Pandas** | Cleaning, validation, derived fields |
+| **PostgreSQL / SQL** | Central analytical data layer and reusable views |
+| **Power BI / DAX** | Business intelligence and management reporting |
+| **Streamlit / Plotly** | Interactive web-based analytics |
+| **Supabase** | Cloud PostgreSQL hosting |
+| **GitHub** | Version control and portfolio documentation |
+
+The same KPI definitions and business rules are used across the SQL, Power BI, and Streamlit layers to maintain analytical consistency.
+
+---
+
+## 📊 Dashboard Preview
+
+### Streamlit
+
+The live Streamlit application provides:
+
+- Executive KPI overview
+- Monthly production and quality trends
+- Production by line and shift
+- Defect rate by line and product
+- Scrap rate by product
+- Downtime by reason
+- Line × Shift performance
+- Interactive filters
+
+👉 **[Open the live Streamlit dashboard](https://manufacturing-quality-analytics.streamlit.app)**
+
+### Power BI
+
+The Power BI report contains four analytical pages:
+
+- Executive Overview
+- Production & Quality
+- Line × Shift Performance
+- Shift Performance
+
+The Power BI project files are available in the `powerbi/` directory.
+
+> **Dashboard screenshots:** visual screenshots can be added here to provide a quick portfolio preview alongside the live Streamlit demo.
+
+---
+
+---
+
 ## Project Overview
 
 Manufacturing operations generate large amounts of production and quality data. This project demonstrates how these data can be transformed into actionable analytical insights.
