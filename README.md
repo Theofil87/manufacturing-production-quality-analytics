@@ -78,9 +78,9 @@ The live Streamlit dashboard provides:
 - Line × Shift performance
 - Interactive filters
 
-![Streamlit dashboard preview](docs/images/streamlit-dashboard.png)
-
 **Live Demo:** https://manufacturing-quality-analytics.streamlit.app
+
+![Streamlit Dashboard](docs/images/streamlit-dashboard.png)
 
 ### Power BI Dashboard
 
@@ -92,6 +92,8 @@ The Power BI report contains four analytical pages:
 - Shift Performance
 
 The Power BI project files are available in the `powerbi/` directory.
+
+![Power BI Dashboard](docs/images/powerbi-dashboard.png)
 
 ---
 
