@@ -100,6 +100,13 @@ def load_dashboard_data(
             ORDER BY month_start
             """
         ),
+        "monthly_quality": load_query(
+            """
+            SELECT *
+            FROM v_monthly_quality_trends
+            ORDER BY month_start
+            """
+        ),
         "by_line": load_query(
             f"""
             SELECT *
@@ -255,17 +262,54 @@ try:
         column.metric(label, value)
 
     monthly = data["monthly"]
-    if not monthly.empty:
-        monthly_long = monthly.melt(
+    monthly_quality = data["monthly_quality"]
+    if not monthly.empty and not monthly_quality.empty:
+        production_long = monthly.melt(
             id_vars="month_start",
-            value_vars=["total_production", "total_good_units", "total_defective_units", "total_scrap_units"],
+            value_vars=["total_production", "total_good_units"],
             var_name="measure",
-            value_name="units",
+            value_name="production_units",
         )
         show_chart(
-            "Monthly Production and Quality Trend",
-            px.line(monthly_long, x="month_start", y="units", color="measure", markers=True),
+            "Production Trend",
+            px.line(
+                production_long,
+                x="month_start",
+                y="production_units",
+                color="measure",
+                markers=True,
+                labels={
+                    "month_start": "Month",
+                    "production_units": "Production Units",
+                    "measure": "Metric",
+                    "total_production": "Total Production",
+                    "total_good_units": "Good Units",
+                },
+            ).update_yaxes(title_text="Production Units"),
         )
+
+        quality_long = monthly_quality.melt(
+            id_vars="month_start",
+            value_vars=["defect_rate", "scrap_rate"],
+            var_name="measure",
+            value_name="rate",
+        )
+        quality_figure = px.line(
+            quality_long,
+            x="month_start",
+            y="rate",
+            color="measure",
+            markers=True,
+            labels={
+                "month_start": "Month",
+                "rate": "Rate (%)",
+                "measure": "Metric",
+                "defect_rate": "Defect Rate",
+                "scrap_rate": "Scrap Rate",
+            },
+        )
+        quality_figure.update_yaxes(title_text="Rate (%)", tickformat=".2%")
+        show_chart("Quality Trend", quality_figure)
 
     left, right = st.columns(2)
     with left:
