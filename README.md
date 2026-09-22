@@ -76,45 +76,40 @@ The project addresses the following business questions:
 - SciPy
 - Jupyter Notebook
 - SQL
-- PostgreSQL
+- PostgreSQL 18
+- SQLAlchemy
 - Power BI
 - DAX
 - Power Query
+- Plotly
 - Streamlit
 - GitHub
 - VS Code
 
----
-
-## Data Pipeline
-
 ```text
-Raw Manufacturing Data
+Raw CSV
+  |
+  v
+Python / Pandas cleaning
+  |
+  v
+Cleaned CSV
         |
         v
-Python Data Cleaning
+PostgreSQL
         |
-        v
-Data Validation
-        |
-        v
-Processed Manufacturing Dataset
-        |
-        +----------------------+
-        |                      |
-        v                      v
-   Jupyter / EDA          PostgreSQL / SQL
-        |                      |
-        +----------+-----------+
-                   |
-                   v
-              Analytics
-                   |
-          +--------+--------+
-          |                 |
-          v                 v
-      Power BI          Streamlit
-      Dashboard         Application
+  v
+SQL analytical views
+  |
+  +----------------------+
+  |                      |
+  v                      v
+    Power BI              Streamlit
+    Dashboard             Dashboard
+```
+
+Jupyter / EDA uses the cleaned CSV for exploratory analysis, while PostgreSQL is
+the production analytics layer used by both reporting applications.
 
 Dataset
 
@@ -208,7 +203,8 @@ The transformation is implemented through the downtime_reason_clean field.
 
 Key KPIs
 
-The Power BI semantic model contains the following core KPIs:
+The Power BI semantic model and Streamlit dashboard use the same validated KPI
+definitions:
 
 - Total Production
 - Total Defective Units
@@ -237,6 +233,29 @@ Total Downtime
 
 Rates are calculated from aggregated quantities rather than averaging row-level percentages.
 
+PostgreSQL Analytical Layer
+
+PostgreSQL 18 provides the production analytics and reusable reporting layer.
+The SQL implementation contains 12 reusable analytical views covering the
+production base, monthly trends, line, shift, product, defect, scrap, downtime,
+line × shift, and reconciliation analyses.
+
+The analytical layer is responsible for:
+
+- Aggregated KPI calculations from unit totals
+- Defect, scrap, and yield rate definitions
+- Downtime reason normalization to `No Reason Recorded`
+- Explicit shift ordering using Morning, Afternoon, and Night
+- Production reconciliation and reconciliation status
+- Reusable datasets for Power BI and Streamlit
+
+The views are defined in `sql/03_create_views.sql` and queried by the analysis
+scripts in `sql/04_kpi_analysis.sql` and `sql/05_production_quality_analysis.sql`.
+
+Power BI and Streamlit use these same validated business definitions so that KPI
+values, rates, downtime handling, shift ordering, and reconciliation results are
+consistent across both applications.
+
 Exploratory Data Analysis
 
 The Jupyter Notebook contains exploratory analysis covering:
@@ -256,6 +275,26 @@ The Jupyter Notebook contains exploratory analysis covering:
 - Data-driven observations and limitations
 
 The EDA is descriptive and focuses on identifying patterns rather than making unsupported causal claims.
+
+Streamlit Dashboard
+
+The Streamlit dashboard is PostgreSQL-backed and uses SQLAlchemy for database
+connections and Plotly for interactive visualizations. PostgreSQL is the primary
+data source; the cleaned CSV is no longer the primary Streamlit source.
+
+The dashboard includes:
+
+- Seven KPI cards: Total Production, Total Defective Units, Total Scrap Units, Yield Rate, Defect Rate, Scrap Rate, and Total Downtime
+- Monthly production and quality trends
+- Production by line and shift
+- Defect rate by line and product
+- Scrap rate by product
+- Downtime by reason
+- Line × Shift performance
+- Section-specific production line, shift, and product filters
+
+Database reads use Streamlit caching, and the application provides explicit
+connection and empty-result handling for local PostgreSQL execution.
 
 Power BI Dashboard
 
@@ -443,7 +482,7 @@ Repository Structure
 manufacturing-production-quality-analytics/
 
 ├── app/
-│   └── Streamlit application
+│   └── app.py
 │
 ├── data/
 │   ├── raw/
@@ -457,7 +496,11 @@ manufacturing-production-quality-analytics/
 │   └── manufacturing-production-quality-analytics.SemanticModel/
 │
 ├── sql/
-│   └── SQL analytics scripts
+│   ├── 01_create_schema.sql
+│   ├── 02_load_data.sql
+│   ├── 03_create_views.sql
+│   ├── 04_kpi_analysis.sql
+│   └── 05_production_quality_analysis.sql
 │
 ├── src/
 │   └── data_processing.py
@@ -473,7 +516,10 @@ manufacturing-production-quality-analytics/
 
 Project Status
 
-🟢 Power BI dashboard completed and validated.
+🟢 Python cleaning and EDA completed.
+🟢 PostgreSQL analytics completed.
+🟢 Power BI dashboard completed.
+🟢 Streamlit PostgreSQL integration completed and validated.
 
 Completed
 Python data cleaning
@@ -495,12 +541,10 @@ Interactive Power BI slicers
 Data reconciliation controls
 Power BI report review and validation
 
-In Progress / Next Steps
-SQL / PostgreSQL analytics layer
-Streamlit dashboard
+Next Steps
 Final portfolio documentation
 GitHub repository polish
-End-to-end project integration
+Additional operational and predictive analysis as data becomes available
 
 Limitations
 
@@ -523,8 +567,6 @@ Future Improvements
 
 Potential future extensions include:
 
-PostgreSQL data warehouse layer
-SQL analytical views
 Advanced manufacturing KPI calculations
 OEE calculation when the required inputs are available
 Machine-level analysis
@@ -534,7 +576,6 @@ Control charts
 Predictive quality analytics
 Anomaly detection
 Automated data pipelines
-Streamlit interactive application
 Automated testing and CI/CD
 Advanced Power BI time intelligence
 Dedicated Date Dimension for more advanced reporting scenarios
