@@ -248,13 +248,13 @@ try:
 
     kpis = data["kpis"].iloc[0]
     metric_rows = [
-        ("Total Production", format_number(kpis["total_production"])),
+        ("Total Production (Units)", format_number(kpis["total_production"])),
         ("Total Defective Units", format_number(kpis["total_defective_units"])),
         ("Total Scrap Units", format_number(kpis["total_scrap_units"])),
         ("Yield Rate", format_rate(kpis["yield_rate"])),
         ("Defect Rate", format_rate(kpis["defect_rate"])),
         ("Scrap Rate", format_rate(kpis["scrap_rate"])),
-        ("Total Downtime", format_number(kpis["total_downtime"], " min")),
+        ("Total Downtime (Minutes)", format_number(kpis["total_downtime"])),
     ]
     first_row = st.columns(4)
     second_row = st.columns(3)
@@ -270,6 +270,12 @@ try:
             var_name="measure",
             value_name="production_units",
         )
+        production_long["measure"] = production_long["measure"].map(
+            {
+                "total_production": "Total Production",
+                "total_good_units": "Good Units",
+            }
+        )
         show_chart(
             "Production Trend",
             px.line(
@@ -282,10 +288,8 @@ try:
                     "month_start": "Month",
                     "production_units": "Production Units",
                     "measure": "Metric",
-                    "total_production": "Total Production",
-                    "total_good_units": "Good Units",
                 },
-            ).update_yaxes(title_text="Production Units"),
+            ).update_yaxes(title_text="Production Units", tickformat=",.0f"),
         )
 
         quality_long = monthly_quality.melt(
@@ -293,6 +297,12 @@ try:
             value_vars=["defect_rate", "scrap_rate"],
             var_name="measure",
             value_name="rate",
+        )
+        quality_long["measure"] = quality_long["measure"].map(
+            {
+                "defect_rate": "Defect Rate",
+                "scrap_rate": "Scrap Rate",
+            }
         )
         quality_figure = px.line(
             quality_long,
@@ -304,8 +314,6 @@ try:
                 "month_start": "Month",
                 "rate": "Rate (%)",
                 "measure": "Metric",
-                "defect_rate": "Defect Rate",
-                "scrap_rate": "Scrap Rate",
             },
         )
         quality_figure.update_yaxes(title_text="Rate (%)", tickformat=".2%")
@@ -317,14 +325,45 @@ try:
         if not by_line.empty:
             show_chart(
                 "Production by Line",
-                px.bar(by_line, x="production_line", y="total_production", text_auto=True),
+                px.bar(
+                    by_line,
+                    x="production_line",
+                    y="total_production",
+                    text_auto=",.0f",
+                    labels={
+                        "production_line": "Production Line",
+                        "total_production": "Production Units",
+                    },
+                    hover_data={
+                        "total_production": ":,.0f",
+                        "total_good_units": ":,.0f",
+                        "total_defective_units": ":,.0f",
+                        "total_scrap_units": ":,.0f",
+                    },
+                ),
             )
     with right:
         defect_by_line = data["defect_by_line"]
         if not defect_by_line.empty:
             show_chart(
                 "Defect Rate by Line",
-                px.bar(defect_by_line, x="production_line", y="defect_rate", text_auto=".2%"),
+                px.bar(
+                    defect_by_line,
+                    x="production_line",
+                    y="defect_rate",
+                    text_auto=".2%",
+                    labels={
+                        "production_line": "Production Line",
+                        "defect_rate": "Defect Rate",
+                        "total_production": "Production Units",
+                        "total_defective_units": "Defective Units",
+                    },
+                    hover_data={
+                        "defect_rate": ".2%",
+                        "total_production": ":,.0f",
+                        "total_defective_units": ":,.0f",
+                    },
+                ).update_yaxes(title_text="Defect Rate", tickformat=".2%"),
             )
 
     left, right = st.columns(2)
@@ -333,14 +372,45 @@ try:
         if not by_shift.empty:
             show_chart(
                 "Production by Shift",
-                px.bar(by_shift, x="shift", y="total_production", text_auto=True),
+                px.bar(
+                    by_shift,
+                    x="shift",
+                    y="total_production",
+                    text_auto=",.0f",
+                    labels={
+                        "shift": "Shift",
+                        "total_production": "Production Units",
+                    },
+                    hover_data={
+                        "total_production": ":,.0f",
+                        "total_good_units": ":,.0f",
+                        "total_defective_units": ":,.0f",
+                        "total_scrap_units": ":,.0f",
+                    },
+                ),
             )
     with right:
         defect_by_product = data["defect_by_product"]
         if not defect_by_product.empty:
             show_chart(
                 "Defect Rate by Product",
-                px.bar(defect_by_product, x="product", y="defect_rate", text_auto=".2%"),
+                px.bar(
+                    defect_by_product,
+                    x="product",
+                    y="defect_rate",
+                    text_auto=".2%",
+                    labels={
+                        "product": "Product",
+                        "defect_rate": "Defect Rate",
+                        "total_production": "Production Units",
+                        "total_defective_units": "Defective Units",
+                    },
+                    hover_data={
+                        "defect_rate": ".2%",
+                        "total_production": ":,.0f",
+                        "total_defective_units": ":,.0f",
+                    },
+                ).update_yaxes(title_text="Defect Rate", tickformat=".2%"),
             )
 
     left, right = st.columns(2)
@@ -349,7 +419,23 @@ try:
         if not scrap_by_product.empty:
             show_chart(
                 "Scrap Rate by Product",
-                px.bar(scrap_by_product, x="product", y="scrap_rate", text_auto=".2%"),
+                px.bar(
+                    scrap_by_product,
+                    x="product",
+                    y="scrap_rate",
+                    text_auto=".2%",
+                    labels={
+                        "product": "Product",
+                        "scrap_rate": "Scrap Rate",
+                        "total_production": "Production Units",
+                        "total_scrap_units": "Scrap Units",
+                    },
+                    hover_data={
+                        "scrap_rate": ".2%",
+                        "total_production": ":,.0f",
+                        "total_scrap_units": ":,.0f",
+                    },
+                ).update_yaxes(title_text="Scrap Rate", tickformat=".2%"),
             )
     with right:
         downtime = data["downtime"]
@@ -361,15 +447,69 @@ try:
                     x="total_downtime_minutes",
                     y="downtime_reason_clean",
                     orientation="h",
-                    text_auto=True,
-                ),
+                    text_auto=",.0f",
+                    labels={
+                        "total_downtime_minutes": "Downtime Minutes",
+                        "downtime_reason_clean": "Downtime Reason",
+                        "record_count": "Records",
+                    },
+                    hover_data={
+                        "total_downtime_minutes": ":,.0f",
+                        "record_count": ":,.0f",
+                    },
+                ).update_xaxes(title_text="Downtime Minutes", tickformat=",.0f"),
             )
 
     st.subheader("Line × Shift Performance")
     if data["line_shift"].empty:
         st.info("No line × shift data is available for the selected filters.")
     else:
-        st.dataframe(data["line_shift"], use_container_width=True, hide_index=True)
+        line_shift_display = data["line_shift"][
+            [
+                "production_line",
+                "shift",
+                "total_production",
+                "total_good_units",
+                "total_defective_units",
+                "total_scrap_units",
+                "yield_rate",
+                "defect_rate",
+                "scrap_rate",
+                "total_downtime_minutes",
+                "reconciliation_gap",
+            ]
+        ].rename(
+            columns={
+                "production_line": "Production Line",
+                "shift": "Shift",
+                "total_production": "Production Units",
+                "total_good_units": "Good Units",
+                "total_defective_units": "Defective Units",
+                "total_scrap_units": "Scrap Units",
+                "yield_rate": "Yield Rate",
+                "defect_rate": "Defect Rate",
+                "scrap_rate": "Scrap Rate",
+                "total_downtime_minutes": "Downtime Minutes",
+                "reconciliation_gap": "Reconciliation Gap",
+            }
+        )
+        st.dataframe(
+            line_shift_display.style.format(
+                {
+                    "Production Units": "{:,.0f}",
+                    "Good Units": "{:,.0f}",
+                    "Defective Units": "{:,.0f}",
+                    "Scrap Units": "{:,.0f}",
+                    "Yield Rate": "{:.2%}",
+                    "Defect Rate": "{:.2%}",
+                    "Scrap Rate": "{:.2%}",
+                    "Downtime Minutes": "{:,.0f}",
+                    "Reconciliation Gap": "{:,.0f}",
+                }
+            ),
+            use_container_width=True,
+            hide_index=True,
+        )
 except (SQLAlchemyError, RuntimeError) as error:
     st.error(
         "A PostgreSQL query failed. Check the database connection and analytical "
