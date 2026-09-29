@@ -4,5 +4,5 @@ matplotlib
 plotly
 streamlit
 sqlalchemy
-psycopg2-binary
+psycopg[binary]>=3.2
 jupyter
